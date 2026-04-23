@@ -1,3 +1,5 @@
+use std::time::Instant;
+
 use axum::{
     Json, Router,
     extract::Query,
@@ -5,7 +7,7 @@ use axum::{
     response::{IntoResponse, Response},
     routing::get,
 };
-use playserde::{
+use soccer_rs::{
     JobDescription, MyError, SOCcerResult, get_crosswalk, run_clips_job, run_soccer_job,
 };
 use serde::{Deserialize, Serialize};
@@ -25,6 +27,8 @@ impl IntoResponse for AppError {
 
 #[tokio::main]
 async fn main() {
+    let start = Instant::now();
+
     let app = Router::new()
         .route("/", get(root))
         .route("/soccer", get(soccer))
@@ -34,6 +38,10 @@ async fn main() {
     let port = std::env::var("PORT").unwrap_or_else(|_| "8080".to_string());
     let address = format!("0.0.0.0:{}", port);
     let listener = tokio::net::TcpListener::bind(&address).await.unwrap();
+
+    let duration = start.elapsed();
+    println!("🚀 Axum started in: {:?}", duration);
+
     axum::serve(listener, app).await.unwrap();
 }
 
