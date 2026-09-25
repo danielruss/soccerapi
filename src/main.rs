@@ -8,13 +8,13 @@ use axum::{
     routing::get,
 };
 use soccer_rs::{
-    JobDescription, MyError, SOCcerResult, get_crosswalk, run_clips_job, run_soccer_job,
+    JobDescription, SoccerError, SOCcerResult, get_crosswalk, run_clips_job, run_soccer_job,
 };
 use serde::{Deserialize, Serialize};
 
-pub struct AppError(pub MyError);
-impl From<MyError> for AppError {
-    fn from(value: MyError) -> Self {
+pub struct AppError(pub SoccerError);
+impl From<SoccerError> for AppError {
+    fn from(value: SoccerError) -> Self {
         AppError(value)
     }
 }
