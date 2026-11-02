@@ -6,9 +6,6 @@ edition = "2024"
 [dependencies]
 axum = { version = "0.8.9", features = ["macros"] }
 soccer-rs = "0.2.0"
-# Keep the published soccer-rs dependency on the tested ONNX Runtime bindings.
-# Its download-binaries feature selects ONNX Runtime 1.24.2 for the build target.
-ort = { version = "=2.0.0-rc.12", default-features = false }
 serde = { version = "1.0.228", features = ["derive"] }
 serde_json = "1.0.149"
 tokio = { version = "1.52.1", features = ["full"] }

@@ -1990,7 +1990,6 @@ name = "soccerapi"
 version = "0.1.0"
 dependencies = [
  "axum",
- "ort",
  "serde",
  "serde_json",
  "soccer-rs",
