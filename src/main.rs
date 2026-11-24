@@ -7,10 +7,10 @@ use axum::{
     response::{IntoResponse, Response},
     routing::get,
 };
-use soccer_rs::{
-    JobDescription, SoccerError, SOCcerResult, get_crosswalk, run_clips_job, run_soccer_job,
-};
 use serde::{Deserialize, Serialize};
+use soccer_rs::{
+    JobDescription, SOCcerResult, SoccerError, get_crosswalk, run_clips_job, run_soccer_job,
+};
 
 pub struct AppError(pub SoccerError);
 impl From<SoccerError> for AppError {
@@ -74,7 +74,7 @@ fn default_n() -> usize {
     10
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct SoccerParams {
     #[serde(rename = "JobTitle")]
     job_title: String,
@@ -83,6 +83,7 @@ pub struct SoccerParams {
     soc1980: Option<String>,
     noc2011: Option<String>,
     isco1988: Option<String>,
+    census2000: Option<String>,
     version: Option<String>,
     #[serde(default = "default_n")]
     n: usize,
@@ -96,6 +97,7 @@ async fn soccer(Query(params): Query<SoccerParams>) -> Result<Json<Vec<SOCcerRes
     update_prior("soc1980", "soc2010", params.soc1980, &mut prior);
     update_prior("noc2011", "soc2010", params.noc2011, &mut prior);
     update_prior("isco1988", "soc2010", params.isco1988, &mut prior);
+    update_prior("census2000", "soc2010", params.census2000, &mut prior);
     let multihot_prior = prior.into_boxed_slice();
 
     let job = JobDescription {
